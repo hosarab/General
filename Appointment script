@@ -1,0 +1,34 @@
+-- Creating table 'Appointments'
+CREATE TABLE [dbo].[Appointments] (
+    [AppointmentId] bigint IDENTITY(1,1) NOT NULL,
+    [PatientId] bigint  NOT NULL,
+    [StartDate] datetime  NOT NULL,
+    [EndDate] datetime  NOT NULL,
+    [SpecialtyId] bigint  NOT NULL,
+    [Purpose] varchar(150)  NOT NULL,
+    [Status] varchar(50)  NOT NULL,
+    [Notes] varchar(500)  NULL,
+    [UniqueIdentifier] uniqueidentifier DEFAULT NEWID()
+);
+GO
+
+
+-- Creating primary key on [AppointmentId] in table 'Appointments'
+ALTER TABLE [dbo].[Appointments]
+ADD CONSTRAINT [PK_Appointments]
+    PRIMARY KEY CLUSTERED ([AppointmentId] ASC);
+GO
+-- Creating foreign key on [PatientId] in table 'Appointments'
+ALTER TABLE [dbo].[Appointments]
+ADD CONSTRAINT [FK_Appointments_Patients]
+    FOREIGN KEY ([PatientId])
+    REFERENCES [dbo].[Patients]
+        ([PatientID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Appointments_Patients'
+CREATE INDEX [IX_FK_Appointments_Patients]
+ON [dbo].[Appointments]
+    ([PatientId]);
+GO
